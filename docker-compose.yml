@@ -15,7 +15,7 @@ services:
     ports:
       - 8080:8080
 
-  chirpstack-gateway-bridge-eu868:
+  chirpstack-gateway-bridge-in865:
     image: chirpstack/chirpstack-gateway-bridge:4.0.0-rc.1
     ports:
       - 1700:1700/udp
@@ -23,6 +23,10 @@ services:
       - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
     depends_on: 
       - mosquitto
+    networks:
+      default:
+        aliases:
+          - helium-miner
 
   chirpstack-rest-api:
     image: chirpstack/chirpstack-rest-api:4.0.0-rc.1
@@ -51,7 +55,27 @@ services:
       - 1883:1883
     volumes: 
       - ./configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+  thingsboard:
+    image: thingsboard/tb-postgres
+    volumes:
+      - thingsboarddata:/data
+    ports:
+      - 9090:9090
+  packet-forwarder:
+    image: nebraltd/hm-pktfwd:e2bd70e
+    restart: always
+    privileged: true
+    environment:
+      - FIRMWARE_VERSION=2022.01.29.0-8
+      - VARIANT=COMP-RAKHM
+      - REGION_OVERRIDE=IN865
+    volumes:
+      - /var/pktfwd:/var/pktfwd
+      - ./hm-pktfwd/pktfwd/config:/opt/pktfwd/config  
+    devices:
+      - "/dev/spidev0.0:/dev/spidev32766.0"
 
 volumes:
   postgresqldata:
   redisdata:
+  thingsboarddata:
