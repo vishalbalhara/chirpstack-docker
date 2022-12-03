@@ -4,7 +4,9 @@ import time
 import json
 
 
-thingsboard_host = ["localhost:9090", "10.147.17.212:9090"]
+#thingsboard_host = ["localhost:9090", "10.147.17.212:9090"]
+thingsboard_host = ["localhost:9999"]
+
 t1_access_token = "5NrIUqk7m2yAFaSbnL93"
 th1_access_token = "KQJpWxMOkrQZIWHFzUwC"
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=thingsboard_telemetry  duplicator services.
+Requires=docker.service
+After=docker.service
+
+[Service]
+WorkingDirectory=/home/pi/chirpstack-docker/telemetry
+ExecStart=/bin/bash proxy.sh
+RestartSec=3
+Restart=always
+
+
+[Install]
+WantedBy=multi-user.target
