@@ -1,0 +1,15 @@
+[Unit]
+Description=thingsboard services.
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/duid/chirpstack-docker/
+ExecStart=/usr/bin/docker-compose -f docker-compose-tb-only.yml up -d
+ExecStop=/usr/bin/docker-compose -f docker-compose-tb-only.yml down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
